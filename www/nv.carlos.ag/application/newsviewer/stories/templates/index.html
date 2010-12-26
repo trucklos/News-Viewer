@@ -1,0 +1,58 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+    "http://www.w3.org/TR/html4/strict.dtd"
+    >
+<html lang="en">
+<head>
+    <title>NewsViewer | Stories | Debug Dump</title>
+    <style type="text/css">
+    
+    
+    </style>
+</head>
+<body>    
+{% for feed in feeds %}
+<div class="feed">
+    <h2><a href="{{ feed.url }}">{{ feed.title }}</a></h2>
+    <ul>
+    {% for story in feed.stories %}
+        <li class="story-item">
+            <h3><a href="{{ story.url }}">{{ story.title }}</a></h3>
+            <ul>
+            {% for pos in story.positions %}
+                <li class="pos-item">{{ pos }}</li>
+            {% endfor %}    
+            </ul>
+        </li>
+    {% endfor %}
+    </ul>
+</div>
+{% endfor %}
+    
+    {% comment %}
+        context = {'feeds': []}
+    
+    allFeeds = Feed.objects.all()
+    for feed in allFeeds:
+        storyList = []
+        
+        allStories = Story.objects.all(feed=Feed)
+        for story in allStories:
+            posList = StoryHistory.objects.all(story=story)
+            
+            storyDict = {
+                'url': story.url,
+                'title': story.title,
+                'positions': posList
+            }
+            storyList.append(storyDict)
+        
+        feedDict = {
+            'url': feed.url,
+            'title': feed.title,
+            'stories': storyList
+        }
+        
+        context['feeds'].append(feedDict)
+    {% endcomment %}
+</body>
+</html>
