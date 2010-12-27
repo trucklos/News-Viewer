@@ -1,5 +1,10 @@
 #  Django settings for newsviewer project.
 
+try:
+    from local_settings import *
+except ImportError:
+    pass
+
 DEBUG = False
 
 # add all the places we'll need to sys.path now
@@ -8,8 +13,6 @@ nv_dir_root = '/srv/www/nv.carlos.ag/application/newsviewer/'
 import sys
 sys.path.append(nv_dir_root)
 sys.path.append(nv_dir_root + 'stories')
-
-MANAGERS = ADMINS
 
 # Local time zone for this installation. Choices can be found here:
 # http://en.wikipedia.org/wiki/List_of_tz_zones_by_name
@@ -87,8 +90,3 @@ INSTALLED_APPS = (
     # Uncomment the next line to enable admin documentation:
     # 'django.contrib.admindocs',
 )
-
-try:
-    import local_settings
-except ImportError:
-    pass
